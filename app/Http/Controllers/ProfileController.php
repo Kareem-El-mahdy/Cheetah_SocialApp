@@ -11,7 +11,10 @@ class ProfileController extends Controller
 {
     public function profile(){
         $posts = Post::where('user_id', Auth::id())->get();
+        $user = User::find(Auth::id());
+        // dd($user);
         return view(view:'profile.profile' , data: [
+            "user" => $user,
             "allPosts" => $posts ,
             "location" => "profile"
             ]);
@@ -39,7 +42,7 @@ class ProfileController extends Controller
         $posts = Post::where('user_id', $profileUser->id)->get();
         return view(view:'profile.profile' , data: [
             "allPosts" => $posts ,
-            "profileUser" => $profileUser,
+            "user" => $profileUser,
             "location" => "viewProfile"
             ]);
     }

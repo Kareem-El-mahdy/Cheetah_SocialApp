@@ -5,11 +5,32 @@
       <div class="col-lg-4">
         <div class="card mb-4">
           <div class="card-body text-center">
-            <img src="{{ Auth::user()->picture }}" alt="avatar"
+            <img src="{{ $user->picture }}" alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">{{ Auth::user()->name }}</h5>
+            <h5 class="my-3">{{ $user->name }}</h5>
+            <div class="row text-center my-2">
+                            <a href="{{ route('followers' , $user) }}" class="col border-start btn">
+                                <h6>Following</h6>
+                                <strong>{{ $user->follows->count() }}</strong>
+                            </a>
+                            <a href="{{ route('following' , $user) }}" class="col border-start btn">
+                                <h6>Followers</h6>
+                                <strong>{{ $user->followers->count() }}</strong>
+                            </a>
+                        </div>
             <div class="d-flex justify-content-center mb-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
+              @php
+                    $isFollowing = $user->followers->contains('follower_id', auth()->id());
+
+              @endphp
+              @if ($user->id !== auth()->id())
+                
+                @if(!$isFollowing)
+                <a href="{{ route('follow', $user) }}" class="btn btn-primary">Follow</a>
+                @else
+                <a href="{{ route('follow', $user) }}" class="btn btn-secondary">Followed</a>
+                @endif
+              @endif
             </div>
           </div>
         </div>
@@ -22,7 +43,7 @@
                 <p class="mb-0">Full Name</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ Auth::user()->name }}</p>
+                <p class="text-muted mb-0">{{ $user->name }}</p>
               </div>
             </div>
             <hr>
@@ -31,7 +52,7 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ Auth::user()->email }}</p>
+                <p class="text-muted mb-0">{{ $user->email }}</p>
               </div>
             </div>
             <hr>
@@ -40,7 +61,7 @@
                 <p class="mb-0">Phone</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ Auth::user()->phone }}</p>
+                <p class="text-muted mb-0">{{ $user->phone }}</p>
               </div>
             </div>
             <hr>
@@ -49,7 +70,7 @@
                 <p class="mb-0">Age</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ Auth::user()->age }}</p>
+                <p class="text-muted mb-0">{{ $user->age }}</p>
               </div>
             </div>
             <hr>
@@ -58,9 +79,12 @@
                 <p class="mb-0">Address</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ Auth::user()->address }}</p>
+                <p class="text-muted mb-0">{{ $user->address }}</p>
               </div>
             </div>
+            @if($user->id === Auth::id())
+            <a href="{{ route('editProfile') }}" class="btn btn-primary m-3">Update Profile</a>
+            @endif
           </div>
         </div>
         

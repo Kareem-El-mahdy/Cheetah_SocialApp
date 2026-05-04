@@ -3,12 +3,12 @@
 @section('content')
 <div class="container">
 
-@if (!$users)
+@if (!$followers)
     <div class="alert alert-info mt-3" role="alert">
-        No users found matching "{{ $search }}".
+        No users found ".
     </div>
     @else
-    @foreach ($users as $user)
+    @foreach ($followers as $user)
         
     <div class="card shadow-sm mt-3" style="max-width: 540px; margin: 0 auto;">
     
@@ -20,18 +20,6 @@
                     <div class="card-body mt-3">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             {{ $user->name }}
-                            @php
-                    $isFollowing = $user->followers->contains('follower_id', auth()->id());
-
-              @endphp
-              @if ($user->id !== auth()->id())
-                
-                @if(!$isFollowing)
-                <a href="{{ route('follow', $user) }}" class="btn btn-primary">Follow</a>
-                @else
-                <a href="{{ route('follow', $user) }}" class="btn btn-secondary">Followed</a>
-                @endif
-              @endif
                         </h5>
                             <small class="text-muted">
                                     <i class="fas fa-map-marker-alt"></i> {{ $user->address }}
@@ -40,16 +28,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row text-center my-2">
-                            <a href="{{ route('followers' , $user) }}" class="col border-start btn">
-                                <h6>Following</h6>
-                                <strong>{{ $user->follows->count() }}</strong>
-                            </a>
-                            <a href="{{ route('following' , $user) }}" class="col border-start btn">
-                                <h6>Followers</h6>
-                                <strong>{{ $user->followers->count() }}</strong>
-                            </a>
-                        </div>
             <div class="card-footer bg-white">
                 <div class="d-flex justify-content-around">
                     <a href="{{ route('user.profile', $user->id) }}" class="btn btn-link text-decoration-none">
@@ -61,17 +39,5 @@
         </div>
         @endforeach
 @endif
-
- @if (!$allPosts)
-    <div class="alert alert-info mt-3" role="alert">
-        No posts found matching "{{ $search }}".
-    </div>
-    @else
- @include('posts.post')
-     
- @endif       
-        
-    </div>
- 
 
 @endsection

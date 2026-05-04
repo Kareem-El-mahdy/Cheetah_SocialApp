@@ -16,26 +16,45 @@
             <div class="collapse navbar-collapse " id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll w-100" style="--bs-scroll-height: 100px;">
                     @if ($location == 'home')
-                    <li class="nav-item bg-secondary rounded mx-3 w-25">
-                        <a class="nav-link active text-dark mx-2 " aria-current="page" href="{{ route('posts.index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="{{ route('profile', Auth::id()) }}">Profile</a>
-                    </li>
+                        <li class="nav-item bg-secondary rounded mx-3 w-25">
+                            <a class="nav-link active text-dark mx-2 " aria-current="page" href="{{ route('posts.index') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="{{ route('profile', Auth::id()) }}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="{{ route('posts.saved') }}">Saved Posts</a>
+                        </li>
                 @elseif ($location == 'profile')
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" aria-current="page" href="{{ route('posts.index') }}">Home</a>
-                    </li>
-                    <li class="nav-item bg-secondary rounded mx-3 w-25">
-                        <a class="nav-link active text-dark mx-2" href="{{ route('profile', Auth::id()) }}">Profile</a>
-                    </li>
+                        <li class="nav-item ">
+                            <a class="nav-link text-secondary" aria-current="page" href="{{ route('posts.index') }}">Home</a>
+                        </li>
+                        <li class="nav-item bg-secondary rounded mx-3 w-25">
+                            <a class="nav-link active text-dark mx-2" href="{{ route('profile', Auth::id()) }}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="{{ route('posts.saved') }}">Saved Posts</a>
+                        </li>
+                @elseif ($location == 'saved')
+                    <li class="nav-item ">
+                            <a class="nav-link  text-secondary" aria-current="page" href="{{ route('posts.index') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="{{ route('profile', Auth::id()) }}">Profile</a>
+                        </li>
+                        <li class="nav-item bg-secondary rounded mx-3 w-25">
+                            <a class="nav-link active text-dark mx-2" href="{{ route('posts.saved') }}">Saved Posts</a>
+                        </li>
                 @else
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" aria-current="page" href="{{ route('posts.index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active text-secondary " href="{{ route('profile') }}">Profile</a>
-                    </li>
+                    <li class="nav-item ">
+                            <a class="nav-link  text-secondary" aria-current="page" href="{{ route('posts.index') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="{{ route('profile', Auth::id()) }}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="{{ route('posts.saved') }}">Saved Posts</a>
+                        </li>
                 @endif
                 
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">

@@ -9,10 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FollowController;
+
 Route::middleware('auth')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('posts.index');
 Route::prefix('posts')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('posts.index');
     Route::get('/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/comments', [PostController::class, 'storeComment'])->name('comments.store');
+    Route::delete('/comments/{comment}', [PostController::class, 'deleteComment'])->name('comments.destroy');
+    Route::post('/like', [PostController::class, 'like'])->name('posts.like');
+    Route::post('/postSave', [PostController::class, 'save'])->name('posts.save');
+    Route::get('/saved', [PostController::class, 'savedPosts'])->name('posts.saved');
+    
     Route::post('/store', [PostController::class, 'store'])->name('posts.store');
     Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
     Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
@@ -25,6 +34,12 @@ Route::prefix('posts')->group(function () {
     Route::get(uri: '/profile/edit', action: [ProfileController::class, 'editProfile']) ->name(name: 'editProfile');
     Route::put(uri: '/profile', action: [ProfileController::class, 'updateProfile']) ->name(name: 'updateProfile');
     Route::get(uri: '/profile/{user}', action: [ProfileController::class, 'viewProfile']) ->name(name: 'user.profile');
+
+
+    Route::get(uri: '/follow/{user}', action: [FollowController::class, 'follow']) ->name(name: 'follow');
+    Route::get(uri: '/followers/{user}', action: [FollowController::class, 'followers']) ->name(name: 'followers');
+    Route::get(uri: '/following/{user}' , action:[FollowController::class , 'follows'])->name(name: 'following');
+    
 
     Route::get(uri: '/search', action: [SearchController::class, 'search']) ->name(name: 'search');
 });
