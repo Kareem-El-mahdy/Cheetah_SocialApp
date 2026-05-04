@@ -1,13 +1,19 @@
 @extends('layouts.App')
 @section('content')
-    <form action="{{ route('posts.update', $post->uuid) }}" method="POST">
+    <form action="{{ route('posts.update', $post) }}" method="POST">
         @csrf
         @method('PUT')
             <div class="mb-3">
-            <label for="exampleFormControlText " class="form-label" >edittitle</label>
+            <label for="exampleFormControlText " class="form-label" >edit title</label>
             <input class="form-control" id="exampleFormControlText" rows="3" type='text' name="title" value="{{ $post->title }}"></input>
+            @error('title')
+                <div class="alert alert-danger">{{ $message }}</div>   
+            @enderror
             <label for="exampleFormControlTextarea1" class="form-label">What do you think</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="content" >{{ $post->content }}</textarea>
+            @error('content')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
             <button  class="btn btn-outline-primary " type="submit"> Publish Article</button>

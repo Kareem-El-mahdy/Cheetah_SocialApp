@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Requests\DeletePostRequest;
+use App\Http\Requests\PostValidRequest;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -20,11 +22,13 @@ class PostController extends Controller
             return view(view:'posts.index' , data: [
             "allPosts" => Post::all() ,
             "location" => "home"
+            
             ]);
     }
-    public function show($uuid){
+    public function show(Post $post){
+       
             return view(view:'posts.show' , data: [
-            "post" => Post::where('uuid', $uuid)->first() ,
+            "post" => $post ,
             "location" => "post"
             ]);
     }
@@ -34,27 +38,46 @@ class PostController extends Controller
                 ]);
         }
         public function store(Request $request){
+
                 $data = $request->all();
-                $data['user_id'] = 2;
                 $data['uuid'] = (string) \Illuminate\Support\Str::uuid();
+                $data['user_id'] = Auth::id();
                 
                 Post::create($data);
                 return redirect()->route('posts.index')->with('success' , 'Post created successfully');
         }
-        public function edit($id){
+
+        public function edit(Post $post){
+                if($post['user_id'] !== Auth::id()){
+                        return redirect()->route('posts.index')->with('error' , 'You are not authorized to edit this post'); 
+                }else{
                 return view(view:'posts.edit' , data: [
-                "post" => Post::where('uuid', $id)->first() ,
+                "post" => $post ,
                 "location" => "edit"
-                ]);
+                ]);}
         }
-        public function update(Request $request , $uuid){
+
+
+
+        public function update(Request $request, $post){
                 $data = $request->all();
+                if($data['user_id'] !== Auth::id()){
+                        return redirect()->route('posts.index')->with('error' , 'You are not authorized to update this post'); 
+                }else{
+
                 // dd($id);
-                Post::where('uuid', $uuid)->first()->update($data);
+                Post::find($post)->update($data);
                 return redirect()->route('posts.index')->with('success' , 'Post updated successfully'); 
+                }
         }
-        public function destroy($uuid){
-                Post::where('uuid', $uuid)->first()->delete();
-                return redirect()->route('posts.index')->with('success' , 'Post deleted successfully'); 
+        public function destroy($post){
+                if($post['user_id'] !== Auth::id()){
+                        return redirect()->route('posts.index')->with('error' , 'You are not authorized to delete this post'); 
+                }else{
+                Post::find($post)->delete();
+                return redirect()->route('posts.index')->with('success' , 'Post deleted successfully'); }
         }
+
+
+        
 }

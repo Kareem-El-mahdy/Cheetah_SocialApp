@@ -5,9 +5,17 @@
             <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Set title</label>
             <input class="form-control" id="exampleFormControlTextarea1" rows="3" type='text' name="title"></input>
+            @error('title')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
             <label for="exampleFormControlTextarea1" class="form-label">What do you think</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="content"></textarea>
+            @error('content')
+                <div class="alert alert-danger">{{ $message }}</div>
+                
+            @enderror
         </div>
+
         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
             <button  class="btn btn-outline-primary " type="submit"> Publish Article</button>
             <button type="button" class="btn btn-outline-secondary "> Cancel</button>
